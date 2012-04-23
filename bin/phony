@@ -1,0 +1,24 @@
+#!/usr/bin/env node
+var path   = require('path'),
+    fs     = require('fs'),
+    util   = require('util'),
+    events = require('events');
+
+var ext;
+try {
+  var coffee = require('coffee-script');
+  if (require.extensions) {
+    require.extensions['.coffee'] = function (module, filename) {
+      var content = coffee.compile(fs.readFileSync(filename, 'utf8'));
+      return module._compile(content, filename);
+    };
+  } else {
+    require.registerExtension('.coffee', function (content) { return coffee.compile(content) });
+  }
+  ext     = /\.(js|coffee)$/;
+} catch (_) {
+  ext     = /\.js$/;
+}
+
+require(__dirname + '/../lib/phony-cli');
+

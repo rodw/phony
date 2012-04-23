@@ -22,6 +22,8 @@ NPM_EXE ?= npm
 PACKAGE_JSON ?= package.json
 # where npm installs external modules
 NODE_MODULES ?= node_modules
+# where to place the generated module
+MODULE_DIR ?= module
 
 # ## node-jscoverage
 
@@ -71,19 +73,44 @@ RM_DASH_I ?= -f
 # ## "Meta" Targets
 
 # `.PHONY` - make targets that aren't actually files
-.PHONY: all clean help clean-node-modules fully-clean-node-modules build js clean-js
+.PHONY: all build-coffee clean clean-coverage clean-docco clean-docs clean-test-module-install clean-js clean-markdown clean-module clean-node-modules coffee.js coverage docco docs fully-clean-node-modules help js markdown module targets test test-module-install todo
+
+# `clean` - delete all generated files
+clean: clean-coverage clean-docco clean-docs clean-js clean-module clean-node-modules
 
 # `all` - the default target
 all: coverage docco
-
-# `clean` - delete all generated files
-clean: clean-node-modules clean-coffee-js clean-coverage clean-docco clean-markdown
 
 # `help` - list targets.
 help:
 	make -rpn | sed -n -e '/^$$/ { n ; /^[^ ]*:/p }' | egrep -v '^\.' | egrep --color '^[^ ]*:'
 
+# `targets` - list Makefile targets that are likely to be .PHONY targets
+targets:
+	grep -E "^[^ #.$$]+:( |$$)" Makefile | sort
+
 # ## NPM targets
+
+# `module` - create an npm-publishable module directory
+module: js test docs coverage
+	mkdir -p $(MODULE_DIR)
+	cp -r lib $(MODULE_DIR)
+	cp -r test $(MODULE_DIR)
+	cp -r bin $(MODULE_DIR)
+	cp -r docs $(MODULE_DIR)
+	cp $(PACKAGE_JSON) $(MODULE_DIR)
+	cp README.* $(MODULE_DIR)
+	cp Makefile $(MODULE_DIR)
+
+test-module-install: clean-test-module-install module
+	mkdir ../testing-module-install; cd ../testing-module-install; npm install ../phony/module; node -e "require('assert').ok(require('phony').make_phony().name())"; cd ../phony; rm -r $(RM_DASH_I) ../testing-module-install
+
+clean-test-module-install:
+	rm -r $(RM_DASH_I) ../testing-module-install
+
+# `clean-module` - remove the `$(MODULE_DIR)`
+clean-module:
+	rm -r $(RM_DASH_I) $(MODULE_DIR)
 
 # `$(NODE_MODULES)` - install node dependencies via npm
 $(NODE_MODULES): $(PACKAGE_JSON)
@@ -101,12 +128,12 @@ fully-clean-node-modules:
 
 # ## Coffee/JS Targets
 
-# `build` - build everything we need to run under coffee
-build: $(NODE_MODULES)
+# `build-coffee` - build everything we need to run under coffee
+build-coffee: $(NODE_MODULES)
 	rm -r $(RM_DASH_I) $(LIB_COV)
 
 # `js` - build everything we need to run under js/node
-js: $(COFFEE_JS)
+js: build-coffee $(COFFEE_JS)
 
 # `.coffee.js` - compile coffee files into js files
 .SUFFIXES: .js .coffee
@@ -169,6 +196,7 @@ markdown: $(MARKDOWN_HTML)
 
 # `docco` - generate docco documentation from coffee sources
 docco: $(COFFEE_SRCS) $(COFFEE_TEST_SRCS) $(NODE_MODULES)
+	rm -r $(RM_DASH_I) docs/docco
 	mkdir -p docs
 	mv docs docs-temporarily-renamed-so-docco-doesnt-clobber-it
 	docco $(COFFEE_SRCS) $(COFFEE_TEST_SRCS)
