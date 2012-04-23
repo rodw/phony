@@ -77,7 +77,7 @@ RM_DASH_I ?= -f
 all: coverage docco
 
 # `clean` - delete all generated files
-clean: clean-node-modules clean-coffee-js clean-coverage clean-docco clean-markdown
+clean: clean-node-modules clean-js clean-coverage clean-docco clean-markdown
 
 # `help` - list targets.
 help:
