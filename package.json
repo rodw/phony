@@ -7,7 +7,7 @@
   "bugs"            : "https://github.com/rodw/phony/issues",
   "author"          : "Rod Waldhoff (http://rodw.github.com/)",
   "version"         : "0.0.1" ,
-  "main"            : "phony.js",
+  "main"            : "lib/phony.js",
   "bin"             : { "phony": "./bin/phony" },
   "dependencies"    : {
     "optimist"        : "latest"
