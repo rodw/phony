@@ -1,0 +1,22 @@
+{
+  "name"            : "phony" ,
+  "version"         : "0.0.1" ,
+  "description"     : "A fake data generator.",
+  "keywords"        : [ "fake", "phony", "data", "generator", "test", "testing", "mock", "person", "name", "email", "address" ],
+  "homepage"        : "http://rodw.github.com/phony",
+  "bugs"            : "https://github.com/rodw/phony/issues",
+  "author"          : "Rod Waldhoff (http://rodw.github.com/)",
+  "dependencies"    : {
+    "coffee-script"   : "~1.2",
+    "optimist"        : "latest"
+  },
+  "devDependencies" : {
+    "expresso"        : "latest",
+    "jscoverage"      : "latest",
+    "mocha"           : "latest",
+    "should"          : "latest",
+    "docco"           : "latest"
+  },
+  "scripts" : {
+  }
+}
