@@ -41,7 +41,7 @@ MOCHA_COV_ARGS  ?= -R html-cov --compilers coffee:coffee-script --globals "_\$$j
 # ## markdown
 
 # list of markdown documention ifiles
-MARKDOWN_SRCS ?= $(wildcard docs/*.md)
+MARKDOWN_SRCS ?= $(wildcard *.md) $(wildcard docs/*.md)
 # list of html files generated from markdown
 MARKDOWN_HTML ?= ${MARKDOWN_SRCS:.md=.html}
 # executable to process markdown

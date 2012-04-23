@@ -2,3 +2,6 @@ node_modules
 lib/*.js
 test/*.js
 docs/docco
+docs/*.html
+README.html
+
