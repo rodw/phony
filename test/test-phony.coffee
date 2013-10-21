@@ -22,7 +22,7 @@ HOME_DIR        = "#{__dirname}/.."
 #   than JavaScript/node.js) environment.
 IS_COFFEE       = process.argv[0].indexOf('coffee') >= 0
 # - `IS_INSTRUMENTED` is `true` *iff* jscoverage-instrumented code is available.
-IS_INSTRUMENTED = (require('path')).existsSync("#{HOME_DIR}/lib-cov")
+IS_INSTRUMENTED = (require('fs')).existsSync("#{HOME_DIR}/lib-cov")
 # - `LIB_DIR` is the directory in which our source files can be found.
 #   It is `lib-cov` when available, otherwise `lib`.
 LIB_DIR         = if IS_INSTRUMENTED then "#{HOME_DIR}/lib-cov" else "#{HOME_DIR}/lib"
