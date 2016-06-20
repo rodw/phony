@@ -2,6 +2,9 @@
 
 A fake data generator in JavaScript/CoffeeScript.
 
+While this repository is perfectly functional, I'd recommend you consider [Faker.js](https://github.com/marak/Faker.js), which is a similar framework that is both more featureful and more actively maintained.
+
+
 # Installing Phony
 
 To install Phony with [NPM](http://npmjs.org/), use:
